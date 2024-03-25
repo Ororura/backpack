@@ -2,20 +2,15 @@ package com.ororura.backpack.creativeTabs;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import static com.ororura.backpack.items.BackpackItem.LEATHER_BACKPACK;
 
 public class BackpackTab {
-    public static class Backpack extends CreativeModeTab {
-        private Backpack(int index, String label) {
-            super(index, label);
-        }
-
+    public static final CreativeModeTab BACKPACK_TAB = new CreativeModeTab("Backpack") {
         @Override
-        public ItemStack makeIcon() {
+        public @NotNull ItemStack makeIcon() {
             return new ItemStack(LEATHER_BACKPACK.get());
         }
-
-    }
-    public static final Backpack istance = new Backpack(CreativeModeTab.TABS.length, "Backpack");
+    };
 }

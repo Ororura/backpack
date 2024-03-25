@@ -1,6 +1,8 @@
 package com.ororura.backpack;
 
 import com.mojang.logging.LogUtils;
+import com.ororura.backpack.blocks.BackpackBlocks;
+import com.ororura.backpack.event.Event;
 import com.ororura.backpack.items.BackpackItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.block.Blocks;
@@ -27,8 +29,10 @@ public class Backpack
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::commonSetup);
         BackpackItem.register(modEventBus);
+        BackpackBlocks.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(this);
     }
+
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {

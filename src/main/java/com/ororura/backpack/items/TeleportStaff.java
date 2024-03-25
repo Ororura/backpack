@@ -16,6 +16,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -28,13 +29,13 @@ public class TeleportStaff extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(Level world, Player player, @NotNull InteractionHand hand) {
         ItemStack itemInHand = player.getItemInHand(hand);
         if (!(world.getDayTime() > 13000)) {
             player.sendSystemMessage(Component.literal("Посох работает только ночью!"));
             return InteractionResultHolder.fail(itemInHand);
         }
-        BlockHitResult ray = getCustomPlayerPOVHitResult(world, player, ClipContext.Fluid.NONE);
+        BlockHitResult ray = getCustomPlayerPOVHitResult(world, player);
         BlockPos lookPos = ray.getBlockPos().relative(ray.getDirection());
         player.getCooldowns().addCooldown(this, 100);
         if (!(player.getHealth() <= 5)) {
@@ -46,7 +47,7 @@ public class TeleportStaff extends Item {
         return InteractionResultHolder.success(itemInHand);
     }
 
-    protected static BlockHitResult getCustomPlayerPOVHitResult(Level p_41436_, Player p_41437_, ClipContext.Fluid p_41438_) {
+    private static BlockHitResult getCustomPlayerPOVHitResult(Level p_41436_, Player p_41437_) {
         float f = p_41437_.getXRot();
         float f1 = p_41437_.getYRot();
         Vec3 vec3 = p_41437_.getEyePosition();
@@ -57,13 +58,12 @@ public class TeleportStaff extends Item {
         float f6 = f3 * f4;
         float f7 = f2 * f4;
         double range = 30;
-        //double d0 = p_41437_.getReachDistance();
         Vec3 vec31 = vec3.add((double) f6 * range, (double) f5 * range, (double) f7 * range);
-        return p_41436_.clip(new ClipContext(vec3, vec31, net.minecraft.world.level.ClipContext.Block.OUTLINE, p_41438_, p_41437_));
+        return p_41436_.clip(new ClipContext(vec3, vec31, net.minecraft.world.level.ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, p_41437_));
     }
 
     @Override
-    public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> p_41423_, TooltipFlag p_41424_) {
+    public void appendHoverText(@NotNull ItemStack p_41421_, @Nullable Level p_41422_, @NotNull List<Component> p_41423_, @NotNull TooltipFlag p_41424_) {
         if (!KeyboardHelper.isHoldingShift()) {
             p_41423_.add(Component.literal("Зажмите SHIFT для подробной информации!"));
         }
