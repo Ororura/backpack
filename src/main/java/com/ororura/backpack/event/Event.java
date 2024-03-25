@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.ororura.backpack.Backpack;
 import com.ororura.backpack.api.Api;
+import com.ororura.backpack.util.GetData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.block.Block;
@@ -15,6 +16,8 @@ import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,13 +32,7 @@ public class Event {
         if (!(block.equals(Blocks.DIRT))) {
             return;
         }
-        CompletableFuture.supplyAsync(() -> {
-            String jsonData = Api.fetchDataFromApi("https://fakestoreapi.com/products/1");
-            Gson gson = new Gson();
-            JsonObject jsonObject = gson.fromJson(jsonData, JsonObject.class);
-            return jsonObject.get("title").getAsString();
-
-        }).thenAccept((result) -> {
+        CompletableFuture.supplyAsync(() -> GetData.getProductRange(1, 10).join()).thenAccept((result) -> {
             breakEvent.getPlayer().sendSystemMessage(Component.literal("API data: " + result));
         });
     }
@@ -58,7 +55,7 @@ public class Event {
 
     @SubscribeEvent
     public static void eventRenderBlock(RenderBlockScreenEffectEvent renderBlockScreenEffectEvent) {
-        if(!(renderBlockScreenEffectEvent.getBlockState().getBlock().equals(Blocks.STONE))) {
+        if (!(renderBlockScreenEffectEvent.getBlockState().getBlock().equals(Blocks.STONE))) {
             return;
         }
         System.out.println(renderBlockScreenEffectEvent.getBlockState().getBlock().getName().getString());
