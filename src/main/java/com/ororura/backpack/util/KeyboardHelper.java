@@ -15,6 +15,10 @@ public class KeyboardHelper {
         return InputConstants.isKeyDown(WINDOW, GLFW.GLFW_KEY_LEFT_CONTROL) || InputConstants.isKeyDown(WINDOW, GLFW.GLFW_KEY_RIGHT_CONTROL);
     }
 
+    public static boolean isHoldingK() {
+        return  InputConstants.isKeyDown(WINDOW, GLFW.GLFW_KEY_K);
+    }
+
     public static boolean isHoldingSpace() {
         return InputConstants.isKeyDown(WINDOW, GLFW.GLFW_KEY_SPACE);
     }

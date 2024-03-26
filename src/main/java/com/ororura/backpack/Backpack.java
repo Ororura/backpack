@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.ororura.backpack.blocks.BackpackBlocks;
 import com.ororura.backpack.event.Event;
 import com.ororura.backpack.items.BackpackItem;
+import com.ororura.backpack.networking.BackpackPacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
@@ -38,6 +39,7 @@ public class Backpack
     {
         LOGGER.info("HELLO FROM COMMON SETUP");
         LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
+        BackpackPacketHandler.register();
     }
 
     @SubscribeEvent

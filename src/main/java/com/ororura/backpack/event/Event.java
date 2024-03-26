@@ -4,10 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.ororura.backpack.Backpack;
 import com.ororura.backpack.api.Api;
+import com.ororura.backpack.networking.BackpackPacketHandler;
+import com.ororura.backpack.networking.packet.SimpleMessage;
+import com.ororura.backpack.util.KeyboardHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderBlockScreenEffectEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -58,10 +62,17 @@ public class Event {
 
     @SubscribeEvent
     public static void eventRenderBlock(RenderBlockScreenEffectEvent renderBlockScreenEffectEvent) {
-        if(!(renderBlockScreenEffectEvent.getBlockState().getBlock().equals(Blocks.STONE))) {
+        if (!(renderBlockScreenEffectEvent.getBlockState().getBlock().equals(Blocks.STONE))) {
             return;
         }
         System.out.println(renderBlockScreenEffectEvent.getBlockState().getBlock().getName().getString());
         renderBlockScreenEffectEvent.getPlayer().sendSystemMessage(Component.literal("Камень был загружен!"));
+    }
+
+    @SubscribeEvent
+    public static void eventCreateCow(InputEvent.Key key) {
+        if (KeyboardHelper.isHoldingK()) {
+            BackpackPacketHandler.sendToServer(new SimpleMessage());
+        }
     }
 }
