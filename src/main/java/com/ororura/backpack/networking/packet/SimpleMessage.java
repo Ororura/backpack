@@ -29,6 +29,7 @@ public class SimpleMessage {
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
+
             ServerPlayer player = context.getSender();
             assert player != null;
             ServerLevel serverLevel = player.getLevel();
