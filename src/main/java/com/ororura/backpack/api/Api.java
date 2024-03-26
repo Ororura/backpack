@@ -4,8 +4,12 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Api {
+    private static final Logger logger = Logger.getLogger(Api.class.getName());
+
     public static String fetchDataFromApi(String urlApi) {
         StringBuilder response = new StringBuilder();
         try {
@@ -20,7 +24,7 @@ public class Api {
             }
             in.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error fetching data from API: " + e.getMessage(), e);
         }
         return response.toString();
     }
